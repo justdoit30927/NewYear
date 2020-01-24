@@ -26,7 +26,7 @@
         image.onload = function() {
             //動態決定第二頁大小
             var myHight = $(".front").height();
-            var myWidth = $("#lantern").width();
+            var myWidth = $(".front").width();
             $(".back").height(myHight);
             $(".back").width(myWidth);
         }
