@@ -20,6 +20,7 @@
             link.href = url;
             document.getElementsByTagName("head") [0].appendChild(link);
         }
+        /*我的高度都是依照圖片再給的，因為圖片載入太慢，導致取不到高度，所以改成，等圖片載完再取高度*/
         var image = new Image();
         image.src = "picture/Hnet-image.gif";
         image.onload = function() {
