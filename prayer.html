@@ -22,14 +22,16 @@
         }
         var image = new Image();
         image.src = "picture/Hnet-image.gif";
-
-
-        $( document ).ready(function(){
+        image.onload = function() {
             //動態決定第二頁大小
             var myHight = $(".front").height();
             var myWidth = $("#lantern").width();
             $(".back").height(myHight);
             $(".back").width(myWidth);
+        }
+
+        $( document ).ready(function(){
+            
 
             /*全域宣告
             Vue.component('button-counter', {

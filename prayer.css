@@ -69,6 +69,7 @@
     transform:rotateY(-180deg);
     border:black 2px solid;
     box-sizing: border-box;
+    overflow: auto;
 }
 
 
