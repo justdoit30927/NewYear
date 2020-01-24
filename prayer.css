@@ -1,0 +1,154 @@
+/*把預設的按鈕樣式取消 背景變透明、沒有邊框、outline是按下去會出現邊框*/
+.button{
+    background-color:transparent;
+    border: none;
+    outline:none;
+}
+/*按鈕樣式*/
+.button{
+    background-color:#ffa500;
+    border:black 2px solid ;
+    border-radius: 50px;
+}
+.button:hover{
+    background-color:#ff1e00;
+}
+
+/**滾輪樣式**/
+::-webkit-scrollbar {
+    width: 10px;
+}
+::-webkit-scrollbar-thumb {
+    background: #646464;
+    border: 3px solid  white;
+    border-radius: 100px;
+}
+::-webkit-scrollbar-track {
+    background: white;
+    border: 3px solid white;
+    border-radius: 100px;
+}
+/**************  整張明信片定位  ************/
+.photo{
+    position: relative;
+    width:60%;
+    margin-top: 3%;
+    margin-left: 10%;
+    box-sizing: border-box;
+}
+
+@media screen and (max-width: 300px) {
+    .photo{
+        width:100%;
+    }
+
+}
+
+/**************  正面  ************/
+.front
+{
+    float: left;
+    top:0px;
+    left: 0px;
+    width:100%;
+    /*width: 300px;*/
+    /*height: 350px;*/
+    backface-visibility: hidden;
+    transition: 0.6s;
+    box-sizing: border-box;
+}
+.front img
+{
+    width:100%;
+}
+
+/**************  反面  ************/
+.back
+{
+    position: absolute;
+    top:0px;
+    left: 0px;
+    width:100%;
+    /*width: 300px;*/
+    /*height: 350px;*/
+    backface-visibility: hidden;
+    transition: 0.6s;
+    transform:rotateY(-180deg);
+    border:black 2px solid;
+    box-sizing: border-box;
+}
+
+
+#letter
+{
+    position: relative;
+    width: 100%;
+    height:100%;
+    padding: 20px;
+    box-sizing: border-box;
+
+
+    font-family:cursive;
+    font-weight: bold;
+    font-size:20px;
+}
+#letter >div
+{
+    float: left;
+    height: 100%;
+}
+#letter .left
+{
+    width:15%;
+    border-right: black 2px solid;
+    padding-right: 5px;
+    box-sizing: border-box;
+}
+#stamp
+{
+    width: 100%;
+}
+
+#letter .right
+{
+    width:85%;
+    padding:20px;
+    box-sizing: border-box;
+    overflow-y:scroll;
+}
+
+#letter .right .letter-title
+{
+    height: 10%;
+}
+
+#letter .right .letter-content
+{
+    height: 90%;
+    text-indent:40px;
+}
+
+.answer
+{
+    color:red;
+}
+
+
+/***************翻頁動畫 ***************/
+/*.photo:hover .front
+{
+    transform:rotateY(-180deg);
+}
+.photo:hover .back
+{
+    transform:rotateY(0deg);
+}*/
+
+.fontFlip
+{
+    transform:rotateY(-180deg);
+}
+.backFlip
+{
+    transform:rotateY(0deg);
+}

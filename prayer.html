@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="./Jquery/jquery-3.4.1.js"></script>
+    <script src="./Vue/vue.js"></script>
+    <link rel=stylesheet type="text/css" href="prayer.css">
+    <!--<link rel=stylesheet type="text/css" href="fontawesome/css/all.css">-->
+    <script>
+        $( document ).ready(function(){
+            //動態決定第二頁大小
+            var myHight = $(".front").height();
+            var myWidth = $(".front").width();
+            $(".back").height(myHight);
+            $(".back").width(myWidth);
+
+            /*Vue.component('button-counter', {
+                template: "<div>{{count}}<input type='button' @click='Yes' value='是' ><input type='button' @click='Deny' value='否' >{{Text}}</div>",
+
+                data: function () {
+                    return {
+                    count: 0,
+                    Text:"",
+                    }
+                },
+
+                methods:{
+                    Yes:function(){
+                        this.Text ="是的";
+                    },
+                    Deny:function(){
+                        this.Text ="不是的";
+                    }
+                }
+                //template: '<button v-on:click="count++">You clicked me {{ count }} times.</button>'
+            })*/
+
+            var vm = new Vue({
+                el:'#photography',
+                data:{
+                    flipPhoto:false,//找片翻頁
+                    inputNameShow:true,
+                    name:"",
+                    newYearAnswer:"",//新年新希望的回答  是、否
+                    jobAnswer:"",//工作的回答  是、否
+                    pictureAnswer:"",//圖片回答 是、否
+                },
+                methods:{
+                    inputName:function(){
+                        this.inputNameShow = false;
+                    },
+                    //翻背面
+                    flip:function(){
+                        this.flipPhoto = true;
+                    },
+                    //翻正面
+                    unflip:function(){
+                        this.flipPhoto = false;
+                    },
+                },
+                components:{
+                    //是、否 的選項
+                    options:{
+                        props:["questionType"],
+                        template: "<span>" + 
+                                  "<input type='button' class='button' @click='agree(questionType)' value='是'/>" + 
+                                  "&nbsp" + 
+                                  "<input type='button' class='button' @click='deny(questionType)' value='否'/>" + 
+                                  "</span>",
+                        methods:{
+                            //選擇 是
+                            agree:function(question_Type){
+                                if(question_Type==="job"){
+                                    vm.$data.jobAnswer = "Yes";
+                                }
+                                if(question_Type==="newYear"){
+                                    vm.$data.newYearAnswer = "Yes";
+                                }
+                                if(question_Type==="picture"){
+                                    vm.$data.pictureAnswer = "Yes";
+                                }                                
+                            },
+                            //選擇 否
+                            deny:function(question_Type){
+                                if(question_Type==="job"){
+                                    vm.$data.jobAnswer = "No";
+                                }
+                                if(question_Type==="newYear"){
+                                    vm.$data.newYearAnswer = "No";
+                                }
+                                if(question_Type==="picture"){
+                                    vm.$data.pictureAnswer = "No";
+                                } 
+                            }
+                        }
+                    }
+                }
+            })
+        })
+    </script>
+</head>
+<body>
+    <div id="photography" class="photo">
+        <!--正面-->
+        <div class="front" :class="{fontFlip:flipPhoto}" @click="flip">
+            <img src="picture/Hnet-image.gif"/>
+        </div>
+        <!--反面-->
+        <div class="back" :class="{backFlip:flipPhoto}">
+            <div id="letter">
+                <!--反面左邊-->
+                <div class="left">
+                    <div>
+                        <img id="stamp" src="stamp.jpg"/>
+                    </div>
+                    <div style="text-align: center;">
+                        <input type="button" value="回封面" class="button" @click="unflip"/>
+                    </div>
+                </div>
+                <!--反面右邊-->
+                <div class="right">
+                    <!--姓名-->
+                    <span v-show="inputNameShow">請輸入姓名：<input type="text" v-model="name"/>
+                        <input type="button" class='button' value="確認" @click="inputName"/>
+                    </span>
+                    <div class="letter-title">Dear：{{name}}                        
+                    </div>
+                    <!--內容-->
+                    <div class="letter-content">
+                        <div><span style='font-size:30px'>祝你在鼠年，有情人終成眷鼠、鼠不盡的收穫、鼠不盡的鈔票、鼠不盡的美滿生活！</span></div>
+                        <br/>
+                        <div>好的!!吉祥話時間結束</div>
+                        <div>時間飛逝，轉眼間又是新的一年</div>
+                        <!--第一個問題-->
+                        <div>去年的新年新希望達成了嗎？
+                            <options question-Type="newYear"></options>
+                        </div>
+                        <div class="answer" v-if="newYearAnswer==='Yes'">恭喜!!祝你今年也能順利達成。話說今年願望是甚麼可以偷偷跟我講嗎？</div>
+                        <div class="answer" v-if="newYearAnswer==='No'">沒關係，人因夢想而偉大，新的一年會更好的。</div>
+                        <br/>
+                        <!--第二個問題-->
+                        <div>工作還開心嗎？
+                            <options question-Type="job"></options>
+                        </div>
+                        <div class="answer" v-if="jobAnswer==='Yes'">能找到滿意的工作，真為你感到高興，記得要照顧自己的身體。 (OS：我覺得一定沒有人會選這個選項)</div>
+                        <div class="answer" v-if="jobAnswer==='No'">
+                            <div>你並不孤單，我也是，為了五斗米折腰。說錯，是為了一斗米跪在地上。</div>
+                            <div>但我相信你一定能撐過去的，不經一番寒徹骨 焉得梅花撲鼻香，加油。記得要照顧自己的身體。</div>
+                        </div>
+                        <br/>
+                        <!--結語-->
+                        <div>
+                            <div>最後我想說的是，努力工作養活自己固然重要。</div>
+                            <div>但人生並不是只有工作，希望你能找到自己未來的目標、找到有興趣的事物、找到生命中對的那個人。</div>
+                            <div>很多事情不是自己能掌控的，人生過得開心就好。 (OS：我人生一直都不再掌控內，隨遇而安，哈哈)</div>
+                            <div style="color:rgb(8, 175, 175);font-size: 30px;">願所有的好運：鼠於你。</div>
+                        </div>
+                        <br/>
+
+                        <div>PS：封面的動圖是我自己做的，做的不錯吧!!
+                            <options question-Type="picture"></options>
+                        </div>
+                        <div class="answer" v-if="pictureAnswer==='Yes'">有眼光</div>
+                        <div class="answer" v-if="pictureAnswer==='No'">走開</div>
+                        <br/><br/><br/><br/>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        
+        
+    </div>
+</body>
+</html>
