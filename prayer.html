@@ -3,9 +3,25 @@
 <head>
     <script src="./Jquery/jquery-3.4.1.js"></script>
     <script src="./Vue/vue.js"></script>
-    <link rel=stylesheet type="text/css" href="prayer.css">
-    <!--<link rel=stylesheet type="text/css" href="fontawesome/css/all.css">-->
     <script>
+        var useragent = navigator.userAgent;
+        if(useragent.indexOf('iPhone') != -1||useragent.indexOf('Android') != -1)
+        {
+            includeLinkStyle("prayer_phone.css");
+        }
+        else{
+            includeLinkStyle("prayer.css");
+        }
+
+        function includeLinkStyle(url) {
+            var link = document.createElement("link");
+            link.rel = "stylesheet";
+            link.type = "text/css";
+            link.href = url;
+            document.getElementsByTagName("head") [0].appendChild(link);
+        }
+
+
         $( document ).ready(function(){
             //動態決定第二頁大小
             var myHight = $(".front").height();
@@ -13,7 +29,8 @@
             $(".back").height(myHight);
             $(".back").width(myWidth);
 
-            /*Vue.component('button-counter', {
+            /*全域宣告
+            Vue.component('button-counter', {
                 template: "<div>{{count}}<input type='button' @click='Yes' value='是' ><input type='button' @click='Deny' value='否' >{{Text}}</div>",
 
                 data: function () {
