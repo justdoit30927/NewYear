@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="./Jquery/jquery-3.4.1.js"></script>
+    <script src="./Vue/vue.js"></script>    
+    <script type="text/javascript" src="https://www.gstatic.com/firebasejs/6.5.0/firebase.js"></script>
+    <!--寫firebase的設定，注意要寫在firebase api宣告的後面-->
+    <link rel=stylesheet type="text/css" href="2021.css">
+
+    <script>
+        var myDB = "DB01";
+        if(findGetParameter("DB") != null){
+            myDB = findGetParameter("DB");
+        }
+        /*設定*/
+        var firebaseConfig = {
+            databaseURL: "https://newyear-347cb-default-rtdb.firebaseio.com/",
+        };
+        firebase.initializeApp(firebaseConfig);
+        //建立連線
+        var db = firebase.database();
+
+        $(document).ready(function(){
+            var myVue = new Vue({
+                el:"#fortuneStick",
+                data:{
+                    //籤運
+                    Number:"",//第幾番
+                    Type:"",//種類
+                    Comment:"",//運勢說明
+
+                    //其他區塊
+                    TotalFortune:0,//整體運勢
+                    MoneyFortune:0,//金錢運勢
+                    LoveFortune:0,//戀愛運勢
+                    JobFortune:0,//工作運勢
+
+
+                    LuckyColor:"",//幸運色
+                    LuckyComprass:"",//幸運方位
+                    LuckyStar:"",//合拍星座
+                    LuckyNumber:"",//幸運數字
+                    LuckyStaff:"",//幸運物
+                },
+                methods:{
+                    //隨機數字  (包含最大、最小)
+                    getRndInteger:function(min, max) {
+                        return Math.floor(Math.random() * (max - min + 1) ) + min;
+                    },
+                    //取得數字
+                    GetNumber:function(){
+                        var myRandom = this.getRndInteger(1,10);
+                        var myChinese ="";
+                        switch(myRandom){
+                            case 1:
+                                myChinese = "一";
+                                break;
+                            case 2:
+                                myChinese = "二";
+                                break;
+                            case 3:
+                                myChinese = "三";
+                                break;
+                            case 4:
+                                myChinese = "四";
+                                break;
+                            case 5:
+                                myChinese = "五";
+                                break;
+                            case 6:
+                                myChinese = "六";
+                                break;
+                            case 7:
+                                myChinese = "七";
+                                break;
+                            case 8:
+                                myChinese = "八";
+                                break;
+                            case 9:
+                                myChinese = "九";
+                                break;
+                            case 10:
+                                myChinese = "十";
+                                break;
+                        }
+                        if(myDB != "DB01"){
+                            myChinese = "特別";
+                        }
+
+                        return myChinese;
+                    },
+                    //取得籤詩
+                    GetFortune:function(){
+                        var myVue = this;
+                        db.ref("/" + myDB + "/Fortune").on('value',function(e){
+                            wkTotleRow = Object.keys(e.val()).length;
+                            var wkRandom = myVue.getRndInteger(1,wkTotleRow);
+                            myVue.Type = e.val()[wkRandom-1].Type;
+                            myVue.Comment = e.val()[wkRandom-1].Comment;
+                        })
+
+                    },
+                    //取得幸運色
+                    GetLuckyColor:function(){
+                        var myVue = this;
+                        db.ref("/DB01/Color").on('value',function(e){
+                            wkTotleRow = Object.keys(e.val()).length;
+                            var wkRandom = myVue.getRndInteger(1,wkTotleRow);
+                            myVue.LuckyColor = e.val()[wkRandom-1];
+                        })
+
+                    },
+                    //取得幸運方位
+                    GetLuckyComprass:function(){
+                        var myVue = this;
+                        db.ref("/DB01/Comprass").on('value',function(e){
+                            wkTotleRow = Object.keys(e.val()).length;
+                            var wkRandom = myVue.getRndInteger(1,wkTotleRow);
+                            myVue.LuckyComprass = e.val()[wkRandom-1];
+                        })
+
+                    },
+                    //取得合拍星座
+                    GetLuckyStar:function(){
+                        var myVue = this;
+                        db.ref("/DB01/Star").on('value',function(e){
+                            wkTotleRow = Object.keys(e.val()).length;
+                            var wkRandom = myVue.getRndInteger(1,wkTotleRow);
+                            myVue.LuckyStar = e.val()[wkRandom-1];
+                        })
+                    },
+                    //取得幸運物
+                    GetLuckyStaff:function(){
+                        var myVue = this;
+                        db.ref("/DB01/Staff").on('value',function(e){
+                            wkTotleRow = Object.keys(e.val()).length;
+                            var wkRandom = myVue.getRndInteger(1,wkTotleRow);
+                            myVue.LuckyStaff = e.val()[wkRandom-1];
+                        })
+                    },
+
+                },
+                computed:{
+
+                },
+                created(){
+                    this.Number = this.GetNumber();
+                    this.GetFortune();
+                    
+
+                    //其他區塊
+                    this.TotalFortune = this.getRndInteger(3,5);
+                    this.MoneyFortune = this.getRndInteger(3,5);
+                    this.LoveFortune = this.getRndInteger(3,5);
+                    this.JobFortune = this.getRndInteger(3,5);
+                    if(myDB != "DB01"){
+                        this.TotalFortune = 5;
+                        this.MoneyFortune = 5;
+                        this.LoveFortune = 5;
+                        this.JobFortune = 5;
+                    }
+
+                    this.GetLuckyColor();
+                    this.GetLuckyComprass();
+                    this.GetLuckyStar();
+                    this.LuckyNumber = this.getRndInteger(0,9);
+                    this.GetLuckyStaff();
+                }
+            })    
+        })
+        function findGetParameter(parameterName) {
+            var result = null,
+		        tmp = [];
+            var items = location.search.substr(1).split("&");
+            for (var index = 0; index < items.length; index++) {
+                tmp = items[index].split("=");
+                if (tmp[0] === parameterName) result = decodeURIComponent(tmp[1]);
+            }
+            return result;
+        }
+    </script>
+</head>
+<body>
+    <!-- 籤詩 -->
+    <div id="fortuneStick">        
+        <!--抬頭-->
+        <div id="title">
+            <span>2021 牛年運勢占卜</span>
+        </div>
+        <!--內容-->
+        <div id="content">
+            <!--圖片-->
+            <div id="headPicture">
+                <img src="./img/cow.jpg">
+            </div>
+            <!--運勢-->
+            <div id="fortune">
+                <span id="number">第 {{this.Number}} 番</span> 
+                <span id="type">{{this.Type}}</span>
+            </div>            
+            <!--評論-->
+            <div id="comment">
+                <span>今年運勢：{{this.Comment}}</span>
+            </div>       
+            <!--其他-->
+            <div id="others">
+                <table>
+                    <tr>
+                        <td>整體運勢：</td>
+                        <td>{{this.TotalFortune}} 顆星</td>
+                        <td>財運：</td>
+                        <td>{{this.MoneyFortune}} 顆星</td>
+                    </tr>
+                    <tr>
+                        <td>愛情運：</td>
+                        <td>{{this.LoveFortune}} 顆星</td>
+                        <td>事業運：</td>
+                        <td>{{this.JobFortune}} 顆星</td>
+                    </tr>
+
+                    <!--其他-->
+                    <tr>
+                        <td>幸運色：</td>
+                        <td colspan="3">{{this.LuckyColor}}</td>
+                    </tr>
+                    <tr>
+                        <td>方位：</td>
+                        <td colspan="3">{{this.LuckyComprass}}</td>
+                    </tr>
+                    <tr>
+                        <td>合拍星座：</td>
+                        <td colspan="3">{{this.LuckyStar}}</td>
+                    </tr>
+                    <tr>
+                        <td>數字：</td>
+                        <td colspan="3">{{this.LuckyNumber}}</td>
+                    </tr>
+                    <tr>
+                        <td>幸運物：</td>
+                        <td colspan="3">{{this.LuckyStaff}}</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+
+
+</body>
+</html>

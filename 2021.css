@@ -1,0 +1,116 @@
+/*籤詩置中*/
+body{
+    display:flex;
+    justify-content:center;
+}
+
+/*籤詩*/
+#fortuneStick{
+    width: 500px;
+    height: 1000px; 
+    border:3px black solid;
+}
+
+#fortuneStick > div {
+    box-sizing: border-box;
+}
+
+/*抬頭*/
+#title{
+    margin:10px 30px 0px 30px; 
+    height: 5%;
+    text-align: center;
+    font-size: 30px;
+}
+
+/*內容*/
+#content{
+    margin:10px 30px 0px 30px; 
+    padding:10px;
+    border:5px red double;     
+    height: 90%; 
+}
+#content > div {
+    box-sizing: border-box;
+}
+/******************************   內容中   *******************************************
+
+/******************************  圖片  ***************************************/
+#headPicture{
+    border:3px black solid; 
+    padding: 20px; 
+    height: 36%;
+}
+
+#headPicture img{
+    width: 100%;    
+}
+/******************************  運勢  ***************************************/
+#fortune{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    border:3px black solid; 
+    height: 10%;
+}
+
+#fortune #number{
+    font-size: 30px;
+    border-right: 3px black solid;
+    padding-right: 10px;
+    margin-right: 10px;
+}
+
+#fortune #type{
+    font-size: 40px;
+    color:red;
+}
+/******************************  評論  ***************************************/
+
+#comment{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    border:3px black solid; 
+    padding:20px;
+    overflow:auto;
+    min-height:20%;
+
+    font-size: 20px;
+}
+
+/******************************  其他  ***************************************/
+
+#others{
+    border:3px black solid; 
+}
+
+#others table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+#others table tr td {
+    border:1px black solid;
+    padding:5px;
+    
+    width: 25%;
+    text-align: center;
+}
+
+#others table tr td:nth-child(odd){
+    background-color: silver;
+    color:red;
+}
+
+/*
+#others table {
+    border-collapse: collapse;
+    width: 100%;
+}
+#others table tr td {
+    border:1px black solid;
+    padding:5px;
+}*/
