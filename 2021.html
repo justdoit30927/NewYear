@@ -9,7 +9,7 @@
 
     <script>
         var myDB = "DB01";
-        if(findGetParameter("DB") != null){
+        if(findGetParameter("DB") != null && findGetParameter("DB") != ""){
             myDB = findGetParameter("DB");
         }
         /*設定*/
@@ -19,6 +19,14 @@
         firebase.initializeApp(firebaseConfig);
         //建立連線
         var db = firebase.database();
+
+        //登入時間
+        var myDate = new Date();
+        var myTime = myDate.toString();
+        db.ref("/EnterTime").push({
+            EnterUserName:myDB,
+            EnterTime: myTime                   
+        })
 
         $(document).ready(function(){
             var myVue = new Vue({
@@ -154,10 +162,10 @@
                     this.LoveFortune = this.getRndInteger(3,5);
                     this.JobFortune = this.getRndInteger(3,5);
                     if(myDB != "DB01"){
-                        this.TotalFortune = 5;
-                        this.MoneyFortune = 5;
-                        this.LoveFortune = 5;
-                        this.JobFortune = 5;
+                        this.TotalFortune = 1000;
+                        this.MoneyFortune = 1000;
+                        this.LoveFortune = 1000;
+                        this.JobFortune = 1000;
                     }
 
                     this.GetLuckyColor();
@@ -200,7 +208,11 @@
             </div>            
             <!--評論-->
             <div id="comment">
-                <span>今年運勢：{{this.Comment}}</span>
+                <span>
+                    <strong style="font-size: 20px;">今年運勢：</strong>
+                    <br/>
+                    <span v-html="Comment"></span>
+                </span>
             </div>       
             <!--其他-->
             <div id="others">
