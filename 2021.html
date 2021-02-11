@@ -23,7 +23,7 @@
         //登入時間
         var myDate = new Date();
         var myTime = myDate.toString();
-        if(location.href.indexOf("Http") > -1){
+        if(location.href.indexOf("http") > -1){
             db.ref("/EnterTime").push({
                 EnterUserName:myDB,
                 EnterTime: myTime                   
